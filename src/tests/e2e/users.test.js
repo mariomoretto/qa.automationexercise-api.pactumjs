@@ -8,7 +8,7 @@ const {
   deleteUser
 } = require('../../clients/userClient');
 
-describe('Functional - Usuários', () => {
+describe('e2e - Usuários', () => {
   let userId;
   let email;
 

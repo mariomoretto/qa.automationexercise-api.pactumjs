@@ -8,7 +8,7 @@ describe('e2e - Login', () => {
   let password = defaultUser.password;
 
   before(async () => {
-    // Arrange (setup inicial): criar usuário admin para usar no login
+    // Arrange > cria usuario admin para usar no login
     email = getRandomEmail();
     const novoUsuario = { ...defaultUser, email };
 
@@ -21,7 +21,7 @@ describe('e2e - Login', () => {
   });
 
   it('POST /login - deve logar com sucesso', async () => {
-    // Arrange
+    //Arrange
     const payload = { email, password };
 
     // Act

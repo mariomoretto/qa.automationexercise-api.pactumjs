@@ -23,7 +23,7 @@ describe('Contract - Produtos', () => {
   let productId;
 
   before(async () => {
-    // cria admin + token e um produto base para GET/PUT/DELETE
+    // aqui cria admin + token e um produto base para GET/PUT/DELETE
     const email = getRandomEmail();
     const adminUser = { ...defaultUser, email, administrador: 'true' };
 

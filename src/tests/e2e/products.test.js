@@ -16,7 +16,7 @@ describe('e2e - Produtos', () => {
   let productId;
 
   before(async () => {
-    // Arrange: criar admin e logar para pegar token
+    // Arrange: cria o admin e loga pra pegar token
     const email = getRandomEmail();
     const adminUser = { ...defaultUser, email, administrador: 'true' };
 

@@ -9,7 +9,7 @@ describe('Contract - Login', () => {
   const password = defaultUser.password;
 
   before(async () => {
-    // Arrange: criar usuário para poder logar
+    // Arrange> criar usuario para poder logar
     email = getRandomEmail();
     const novoUsuario = { ...defaultUser, email };
 
@@ -24,7 +24,7 @@ describe('Contract - Login', () => {
       .expectStatus(200)
       .toss();
 
-    // Assert (Joi)
+    // Assert 
     const { error } = loginSuccessSchema.validate(res.json, { abortEarly: false });
     expect(error, `Schema inválido: ${error && error.message}`).to.be.undefined;
   });
