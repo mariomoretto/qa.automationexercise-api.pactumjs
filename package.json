@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha \"src/tests/**/*.test.js\" --timeout 10000",
-    "test:contract": "mocha \"src/tests/contract/**/*.test.js\" --timeout 10000",
-    "test:functional": "mocha \"src/tests/functional/**/*.test.js\" --timeout 10000",
+    "test:functional": "mocha \"src/tests/e2e/**/*.test.js\" --timeout 10000",
+    "test:contract":   "mocha \"src/tests/contract-schema/**/*.test.js\" --timeout 10000",
     "report": "mocha \"src/tests/**/*.test.js\" --timeout 10000 --reporter mochawesome --reporter-options reportDir=reports,reportFilename=report"
   },
   "keywords": [],

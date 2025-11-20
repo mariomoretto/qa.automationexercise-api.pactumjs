@@ -2,14 +2,13 @@ const { expect } = require('chai');
 const { pactum } = require('../../helpers/utils');
 const { endpoints } = require('../../config/config');
 const { defaultUser, getRandomEmail } = require('../../data/userData');
-const { loginSuccessSchema } = require('../../schemas/loginSchema');
 
-describe('Contract - Login', () => {
+describe('e2e - Login', () => {
   let email;
-  const password = defaultUser.password;
+  let password = defaultUser.password;
 
   before(async () => {
-    // Arrange: criar usuário para poder logar
+    // Arrange (setup inicial): criar usuário admin para usar no login
     email = getRandomEmail();
     const novoUsuario = { ...defaultUser, email };
 
@@ -21,17 +20,20 @@ describe('Contract - Login', () => {
       .toss();
   });
 
-  it('Contrato POST /login - sucesso', async () => {
+  it('POST /login - deve logar com sucesso', async () => {
+    // Arrange
+    const payload = { email, password };
+
     // Act
-    const res = await pactum
+    const response = await pactum
       .spec()
       .post(endpoints.login)
-      .withJson({ email, password })
+      .withJson(payload)
       .expectStatus(200)
       .toss();
 
-    // Assert (Joi)
-    const { error } = loginSuccessSchema.validate(res.json, { abortEarly: false });
-    expect(error, `Schema inválido: ${error && error.message}`).to.be.undefined;
+    // Assert
+    expect(response.json.message).to.equal('Login realizado com sucesso');
+    expect(response.json.authorization).to.be.a('string');
   });
 });

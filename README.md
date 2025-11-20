@@ -1,25 +1,26 @@
 # Testes de API - ServeRest com PactumJS
 
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-
-![Mocha](https://img.shields.io/badge/Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white)
-
-![Chai](https://img.shields.io/badge/Chai-A30701?style=for-the-badge&logo=chai&logoColor=white)
-
-![Joi](https://img.shields.io/badge/Joi-17.x-blue?style=for-the-badge)
-
-![PactumJS](https://img.shields.io/badge/PactumJS-000000?style=for-the-badge&logo=postman&logoColor=white)
-
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
-
-
 Este projeto contém testes automatizados para a API **ServeRest** utilizando PactumJS, Mocha, Chai e Joi.  
 Foram desenvolvidos *testes funcionais* e *testes de contrato*, cobrindo todos os principais endpoints: **login, usuários e produtos**.
 
 A API utilizada está disponível em:  
 👉 https://serverest.dev/
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+| Tecnologia     | Uso no Projeto |
+|----------------|----------------|
+| **Node.js**    | Ambiente para execução dos testes |
+| **PactumJS**   | Requisições HTTP e validações funcionais |
+| **Mocha**      | Test runner |
+| **Chai**       | Assertions |
+| **Joi**        | Validação do contrato das respostas |
+| **Mochawesome**| Relatórios HTML/JSON dos testes |
+| **GitHub Actions** | CI/CD rodando testes a cada push |
+
+---
 
 ---
 
@@ -40,22 +41,6 @@ qa.automationexercise-api.pactumjs/
 ├── .gitignore
 └── README.md
 ```
-
----
-
-## 🚀 Tecnologias Utilizadas
-
-| Tecnologia     | Uso no Projeto |
-|----------------|----------------|
-| **Node.js**    | Ambiente para execução dos testes |
-| **PactumJS**   | Requisições HTTP e validações funcionais |
-| **Mocha**      | Test runner |
-| **Chai**       | Assertions |
-| **Joi**        | Validação do contrato das respostas |
-| **Mochawesome**| Relatórios HTML/JSON dos testes |
-| **GitHub Actions** | CI/CD rodando testes a cada push |
-
----
 
 ## 📦 Instalação
 
@@ -152,6 +137,26 @@ const res = await pactum.spec().post('/login').withJson(payload).toss();
 
 // Assert
 expect(res.json.message).to.equal('Login realizado com sucesso');
+```
+
+## 📡 Camada de Clients da API (Design Architecture)
+
+Este projeto implementa uma arquitetura adicional chamada API Client Layer, criada com o objetivo de:
+
+  - organizar melhor as chamadas HTTP
+  - evitar duplicação de código
+  - deixar os testes mais limpos, fáceis de manter e de escalar
+  - isolar a lógica de requisição em arquivos próprios
+  - permitir que o projeto cresça de forma sustentável
+
+## 🧩 O que são os clients?
+
+A camada clients funciona como uma coleção de “mini-SDKs” internos, onde cada arquivo encapsula a interação com um recurso da API:
+```bash
+src/clients/
+ ├── loginClient.js
+ ├── userClient.js
+ └── productClient.js
 ```
 
 **✔️ Testes organizados em suítes**

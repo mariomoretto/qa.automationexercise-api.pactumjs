@@ -1,10 +1,17 @@
 const { expect } = require('chai');
-const { pactum } = require('../../helpers/utils');
-const { endpoints } = require('../../config/config');
 const { defaultUser, getRandomEmail } = require('../../data/userData');
 const { defaultProduct, getRandomProductName } = require('../../data/productData');
+const { login } = require('../../clients/loginClient');
+const { createUser } = require('../../clients/userClient');
+const {
+  getProducts,
+  createProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct
+} = require('../../clients/productClient');
 
-describe('Functional - Produtos', () => {
+describe('e2e - Produtos', () => {
   let adminToken;
   let productId;
 
@@ -13,17 +20,11 @@ describe('Functional - Produtos', () => {
     const email = getRandomEmail();
     const adminUser = { ...defaultUser, email, administrador: 'true' };
 
-    await pactum
-      .spec()
-      .post(endpoints.usuarios)
-      .withJson(adminUser)
+    await createUser(adminUser)
       .expectStatus(201)
       .toss();
 
-    const loginResponse = await pactum
-      .spec()
-      .post(endpoints.login)
-      .withJson({ email, password: adminUser.password })
+    const loginResponse = await login(email, adminUser.password)
       .expectStatus(200)
       .toss();
 
@@ -31,12 +32,12 @@ describe('Functional - Produtos', () => {
   });
 
   it('GET /produtos - deve retornar lista de produtos', async () => {
-    const response = await pactum
-      .spec()
-      .get(endpoints.produtos)
+    // Act
+    const response = await getProducts()
       .expectStatus(200)
       .toss();
 
+    // Assert
     expect(response.json.quantidade).to.be.a('number');
     expect(response.json.produtos).to.be.an('array');
   });
@@ -45,23 +46,19 @@ describe('Functional - Produtos', () => {
     // Arrange
     const produto = { ...defaultProduct, nome: getRandomProductName() };
 
-    const response = await pactum
-      .spec()
-      .post(endpoints.produtos)
-      .withHeaders('Authorization', adminToken)
-      .withJson(produto)
+    // Act
+    const response = await createProduct(adminToken, produto)
       .expectStatus(201)
       .toss();
 
+    // Assert
     expect(response.json.message).to.equal('Cadastro realizado com sucesso');
     expect(response.json._id).to.be.a('string');
     productId = response.json._id;
   });
 
   it('GET /produtos/{_id} - deve buscar produto por id', async () => {
-    const response = await pactum
-      .spec()
-      .get(`${endpoints.produtos}/${productId}`)
+    const response = await getProductById(productId)
       .expectStatus(200)
       .toss();
 
@@ -69,6 +66,7 @@ describe('Functional - Produtos', () => {
   });
 
   it('PUT /produtos/{_id} - deve editar produto por id', async () => {
+    // Arrange
     const payload = {
       nome: getRandomProductName(),
       preco: 999,
@@ -76,22 +74,17 @@ describe('Functional - Produtos', () => {
       quantidade: 5
     };
 
-    const response = await pactum
-      .spec()
-      .put(`${endpoints.produtos}/${productId}`)
-      .withHeaders('Authorization', adminToken)
-      .withJson(payload)
+    // Act
+    const response = await updateProduct(productId, adminToken, payload)
       .expectStatus(200)
       .toss();
 
+    // Assert
     expect(response.json.message).to.be.a('string');
   });
 
   it('DELETE /produtos/{_id} - deve excluir produto por id', async () => {
-    const response = await pactum
-      .spec()
-      .delete(`${endpoints.produtos}/${productId}`)
-      .withHeaders('Authorization', adminToken)
+    const response = await deleteProduct(productId, adminToken)
       .expectStatus(200)
       .toss();
 

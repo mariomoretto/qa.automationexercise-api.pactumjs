@@ -1,6 +1,4 @@
 const { expect } = require('chai');
-const { pactum } = require('../../helpers/utils');
-const { endpoints } = require('../../config/config');
 const { defaultUser, getRandomEmail } = require('../../data/userData');
 const { defaultProduct, getRandomProductName } = require('../../data/productData');
 const {
@@ -10,6 +8,15 @@ const {
   deleteProdutoSchema,
   updateProdutoSchema
 } = require('../../schemas/productSchema');
+const { login } = require('../../clients/loginClient');
+const { createUser } = require('../../clients/userClient');
+const {
+  getProducts,
+  createProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct
+} = require('../../clients/productClient');
 
 describe('Contract - Produtos', () => {
   let adminToken;
@@ -20,17 +27,11 @@ describe('Contract - Produtos', () => {
     const email = getRandomEmail();
     const adminUser = { ...defaultUser, email, administrador: 'true' };
 
-    await pactum
-      .spec()
-      .post(endpoints.usuarios)
-      .withJson(adminUser)
+    await createUser(adminUser)
       .expectStatus(201)
       .toss();
 
-    const loginRes = await pactum
-      .spec()
-      .post(endpoints.login)
-      .withJson({ email, password: adminUser.password })
+    const loginRes = await login(email, adminUser.password)
       .expectStatus(200)
       .toss();
 
@@ -38,11 +39,7 @@ describe('Contract - Produtos', () => {
 
     const initialProduct = { ...defaultProduct, nome: getRandomProductName() };
 
-    const productRes = await pactum
-      .spec()
-      .post(endpoints.produtos)
-      .withHeaders('Authorization', adminToken)
-      .withJson(initialProduct)
+    const productRes = await createProduct(adminToken, initialProduct)
       .expectStatus(201)
       .toss();
 
@@ -50,9 +47,7 @@ describe('Contract - Produtos', () => {
   });
 
   it('Contrato GET /produtos', async () => {
-    const res = await pactum
-      .spec()
-      .get(endpoints.produtos)
+    const res = await getProducts()
       .expectStatus(200)
       .toss();
 
@@ -63,11 +58,7 @@ describe('Contract - Produtos', () => {
   it('Contrato POST /produtos - cadastro com sucesso', async () => {
     const produto = { ...defaultProduct, nome: getRandomProductName() };
 
-    const res = await pactum
-      .spec()
-      .post(endpoints.produtos)
-      .withHeaders('Authorization', adminToken)
-      .withJson(produto)
+    const res = await createProduct(adminToken, produto)
       .expectStatus(201)
       .toss();
 
@@ -76,9 +67,7 @@ describe('Contract - Produtos', () => {
   });
 
   it('Contrato GET /produtos/{_id}', async () => {
-    const res = await pactum
-      .spec()
-      .get(`${endpoints.produtos}/${productId}`)
+    const res = await getProductById(productId)
       .expectStatus(200)
       .toss();
 
@@ -94,11 +83,7 @@ describe('Contract - Produtos', () => {
       quantidade: 5
     };
 
-    const res = await pactum
-      .spec()
-      .put(`${endpoints.produtos}/${productId}`)
-      .withHeaders('Authorization', adminToken)
-      .withJson(payload)
+    const res = await updateProduct(productId, adminToken, payload)
       .expectStatus(200)
       .toss();
 
@@ -107,10 +92,7 @@ describe('Contract - Produtos', () => {
   });
 
   it('Contrato DELETE /produtos/{_id}', async () => {
-    const res = await pactum
-      .spec()
-      .delete(`${endpoints.produtos}/${productId}`)
-      .withHeaders('Authorization', adminToken)
+    const res = await deleteProduct(productId, adminToken)
       .expectStatus(200)
       .toss();
 

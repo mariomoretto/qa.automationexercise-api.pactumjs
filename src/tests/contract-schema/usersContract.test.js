@@ -1,6 +1,4 @@
 const { expect } = require('chai');
-const { pactum } = require('../../helpers/utils');
-const { endpoints } = require('../../config/config');
 const { defaultUser, getRandomEmail } = require('../../data/userData');
 const {
   listaUsuariosSchema,
@@ -9,6 +7,13 @@ const {
   deleteUsuarioSchema,
   updateUsuarioSchema
 } = require('../../schemas/userSchema');
+const {
+  getUsers,
+  createUser,
+  getUserById,
+  updateUser,
+  deleteUser
+} = require('../../clients/userClient');
 
 describe('Contract - Usuários', () => {
   let userId;
@@ -19,10 +24,7 @@ describe('Contract - Usuários', () => {
     email = getRandomEmail();
     const novoUsuario = { ...defaultUser, email };
 
-    const res = await pactum
-      .spec()
-      .post(endpoints.usuarios)
-      .withJson(novoUsuario)
+    const res = await createUser(novoUsuario)
       .expectStatus(201)
       .toss();
 
@@ -30,9 +32,7 @@ describe('Contract - Usuários', () => {
   });
 
   it('Contrato GET /usuarios', async () => {
-    const res = await pactum
-      .spec()
-      .get(endpoints.usuarios)
+    const res = await getUsers()
       .expectStatus(200)
       .toss();
 
@@ -44,10 +44,7 @@ describe('Contract - Usuários', () => {
     const novoEmail = getRandomEmail();
     const novoUsuario = { ...defaultUser, email: novoEmail };
 
-    const res = await pactum
-      .spec()
-      .post(endpoints.usuarios)
-      .withJson(novoUsuario)
+    const res = await createUser(novoUsuario)
       .expectStatus(201)
       .toss();
 
@@ -56,9 +53,7 @@ describe('Contract - Usuários', () => {
   });
 
   it('Contrato GET /usuarios/{_id}', async () => {
-    const res = await pactum
-      .spec()
-      .get(`${endpoints.usuarios}/${userId}`)
+    const res = await getUserById(userId)
       .expectStatus(200)
       .toss();
 
@@ -74,10 +69,7 @@ describe('Contract - Usuários', () => {
       administrador: defaultUser.administrador
     };
 
-    const res = await pactum
-      .spec()
-      .put(`${endpoints.usuarios}/${userId}`)
-      .withJson(payload)
+    const res = await updateUser(userId, payload)
       .expectStatus(200)
       .toss();
 
@@ -86,9 +78,7 @@ describe('Contract - Usuários', () => {
   });
 
   it('Contrato DELETE /usuarios/{_id}', async () => {
-    const res = await pactum
-      .spec()
-      .delete(`${endpoints.usuarios}/${userId}`)
+    const res = await deleteUser(userId)
       .expectStatus(200)
       .toss();
 
