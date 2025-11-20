@@ -1,12 +1,19 @@
 # Testes de API - ServeRest com PactumJS
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+
 ![Mocha](https://img.shields.io/badge/Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white)
+
 ![Chai](https://img.shields.io/badge/Chai-A30701?style=for-the-badge&logo=chai&logoColor=white)
+
 ![Joi](https://img.shields.io/badge/Joi-17.x-blue?style=for-the-badge)
+
 ![PactumJS](https://img.shields.io/badge/PactumJS-000000?style=for-the-badge&logo=postman&logoColor=white)
+
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+
 
 Este projeto contém testes automatizados para a API **ServeRest** utilizando PactumJS, Mocha, Chai e Joi.  
 Foram desenvolvidos *testes funcionais* e *testes de contrato*, cobrindo todos os principais endpoints: **login, usuários e produtos**.
