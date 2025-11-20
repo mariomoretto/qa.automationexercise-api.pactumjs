@@ -1,0 +1,24 @@
+{
+  "name": "serverest-api-pactum",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha \"src/tests/**/*.test.js\" --timeout 10000",
+    "test:contract": "mocha \"src/tests/contract/**/*.test.js\" --timeout 10000",
+    "test:functional": "mocha \"src/tests/functional/**/*.test.js\" --timeout 10000",
+    "report": "mocha \"src/tests/**/*.test.js\" --timeout 10000 --reporter mochawesome --reporter-options reportDir=reports,reportFilename=report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "joi": "^18.0.2",
+    "pactum": "^3.8.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.1",
+    "mocha": "^11.7.5",
+    "mochawesome": "^7.1.4"
+  }
+}
