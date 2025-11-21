@@ -27,19 +27,47 @@ A API utilizada está disponível em:
 ## 📁 Estrutura do Projeto
 ```
 qa.automationexercise-api.pactumjs/
-├── .github/workflows/ # Pipeline CI com GitHub Actions
+├── .github/
+│   └── workflows/
+│       └── main.yml                 # Pipeline CI com GitHub Actions
+│
 ├── src/
-│ ├── config/ # Configurações de URL e endpoints
-│ ├── data/ # Massa/dados dinâmicos para testes
-│ ├── helpers/ # Utils e configuração do Pactum
-│ ├── schemas/ # Schemas Joi (validação de contrato)
-│ └── tests/
-│ ├── contract/ # Testes de contrato (Joi)
-│ └── functional/ # Testes funcionais (CRUD completo)
-├── reports/ # Relatórios mochawesome (gerado automaticamente)
-├── package.json
+│   ├── clients/                     # Camada Client (encapsula chamadas da API)
+│   │   ├── loginClient.js
+│   │   ├── productClient.js
+│   │   └── userClient.js
+│   │
+│   ├── config/                      # Configurações de URL e endpoints
+│   │   └── config.js
+│   │
+│   ├── data/                        # Massa/dados dinâmicos para testes
+│   │   ├── productData.js
+│   │   └── userData.js
+│   │
+│   ├── helpers/                     # Utils e configuração do Pactum
+│   │   └── utils.js
+│   │
+│   ├── schemas/                     # Schemas Joi (validação de contrato)
+│   │   ├── loginSchema.js
+│   │   ├── productSchema.js
+│   │   └── userSchema.js
+│   │
+│   └── tests/
+│       ├── contract-schema/         # Testes de contrato (Joi)
+│       │   ├── loginContract.test.js
+│       │   ├── productsContract.test.js
+│       │   └── usersContract.test.js
+│       │
+│       └── e2e/                     # Testes funcionais (CRUD completo)
+│           ├── login.test.js
+│           ├── products.test.js
+│           └── users.test.js
+│
 ├── .gitignore
+├── package.json
+├── package-lock.json
 └── README.md
+
 ```
 
 ## 📦 Instalação
